@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHECK IN-OUT</title>
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style-check.css">
+
+</head>
+<body>
+    <header>
+        <h1 class="no-show">CHECK IN-OUT</h1>
+        <h2 class="no-show">Check Your Everday!</h2>
+        <nav class="header_nav">
+            <div class="header_logo">CHECK IN-OUT</div>
+            <ul class="header_list">
+                <li class="header_list_member"></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="main_checkformBOX">
+            <h3 class="no-show">CHECK NOW</h3>
+            <div class="checkformBOX_clock" id="current-time"><%= new Date().getHours() %>:<%= new Date().getMinutes().toString().padStart(2, '0') %></div>
+            <form method="POST" action="/check" class="checkformBOX_form">
+                <input type="text" class="checkformBOX_form_name" name="name" placeholder="<%= googleUser.displayName %>">
+                <select name="department" class="checkformBOX_form_department">
+                    <option selected>Department</option>
+                        <option value="Front-end Design">Front-end Design</option>
+                        <option value="Back-end Design">Back-end Design</option>
+                        <option value="Visul Design">Visul Design</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                </select>
+                <label class="checkformBOX_form_check-switch">
+                    <input type="checkbox" class="check-switch_btn" name="status" value="簽到">
+                    <span class="check-switch_slider"></span>
+                </label>
+                <button class="checkformBOX_form_submitBTN" type="submit">CHECK!</button>
+            </form>
+        </section>
+        <section class="main_checklogBOX">
+            <h3>CHECK LOG</h3>
+            <ul class="checklogBOX_list">
+              <% Check.reverse().forEach(function(Check) { %>
+                <li class="checklogBOX_item">
+                    <span class="checklogBOX_item_date"><%= Check.updatedAt.toLocaleString('zh-TW', { 
+                        timeZone: 'Asia/Taipei',
+                        year: 'numeric', 
+                        month: 'short', 
+                        day: '2-digit'
+                      }) %></span>
+                    <span class="checklogBOX_item_week"><%= Check.updatedAt.toLocaleString('zh-TW', { 
+                        timeZone: 'Asia/Taipei',
+                        weekday: 'short',
+                      }) %></span>
+                    <span class="checklogBOX_item_time"><%= Check.updatedAt.toLocaleString('zh-TW', { 
+                        timeZone: 'Asia/Taipei',
+                        hour: 'numeric', 
+                        minute: 'numeric'
+                      }) %></span>
+                    <span class="checklogBOX_item_on-off"><%= Check.status %></span>
+                </li>
+              <% }) %>
+            </ul>
+            <button class="checklogBOX_list_readmoreBTN">more</button>
+        </section>
+    </main>
+
+</body>
+<script>
+    setInterval(() => {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const formattedTime = `${hours}:${minutes}`;
+      document.getElementById("current-time").textContent = formattedTime;
+    }, 60000);
+</script>
+</html>
